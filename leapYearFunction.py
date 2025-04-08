@@ -2,8 +2,8 @@
 year = int(input("年份："))
 
 def learYear(yy):
-    #isLeadYear = yy%4 == 0 and yy%100 != 0 or yy%400 ==0
-    if (yy%4 == 0 and yy%100 != 0 or yy%400 ==0):
+    isLeadYear = yy%4 == 0 and yy%100 != 0 or yy%400 ==0
+    if isLeadYear:
         return True
     else:
         return False
