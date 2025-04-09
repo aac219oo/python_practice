@@ -11,3 +11,14 @@ images\113-2midterm\parkingFee.jpg
 ********
 ********
 '''
+
+inputHeight = int(input("請輸入長度："))
+inputWeight = int(input("請輸入寬度："))
+
+if 0 < inputWeight < 20 and 0 < inputWeight < 20:
+    for i in range(inputHeight):
+        for ii in range(inputWeight):
+            print("*", end="")
+        print("")
+else:
+    print("請輸入小於20的正整數")
