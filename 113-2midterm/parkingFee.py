@@ -14,3 +14,30 @@ images\113-2midterm\parkingFee.jpg
      停車120分鐘，收費$120元
      停車250分鐘，收費$320元
 '''
+inTwoHour = 20
+overTwoHour = 30
+overFourHour = 40
+overSixHour = 500
+
+inputParkingTime = int(input("請輸入總停車時間(分鐘)："))
+
+def parkingFee(min):
+     calParkingTime = min // 30
+     if min % 30 >= 15:
+          calParkingTime += 1
+
+     if 30 > min > 0:
+          fee = inTwoHour           
+     elif 120 > min >= 30:
+          fee = inTwoHour * calParkingTime
+     elif 240 > min >= 120:
+          fee = overTwoHour * calParkingTime
+     elif 360 > min >= 240:
+          fee = overFourHour * calParkingTime
+     elif min >= 360:
+          fee = overSixHour
+     else:
+          fee = "請輸入正確時間"
+     return fee
+
+print(parkingFee(inputParkingTime))

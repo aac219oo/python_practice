@@ -27,3 +27,28 @@ images\113-2midterm\forLoopSequence.jpg
 22222
 111111
 '''
+
+print("(1)")
+for i in range(1,7):
+    for ii in range(1,7):
+        if i >= ii:
+            print(ii, end="")
+    print("")
+print("")
+print("(2)")
+for i in range(1, 7):
+    for ii in range(1, 7):
+        for iii in range(1, 7):
+            if i == ii:
+                if iii <= ii:
+                    print(i, end="")
+    print("")
+print("")
+print("(3)")
+for i in range(6,0,-1):
+    for ii in range(6,0,-1):
+        for iii in range(6,0,-1):
+            if i == ii:
+                if ii <= iii:
+                    print(i, end="")
+    print("")

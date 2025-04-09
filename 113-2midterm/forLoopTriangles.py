@@ -27,3 +27,19 @@ images\113-2midterm\forLoopTriangles.jpg
         **
          *
 '''
+
+print("(1)")
+for i in range(10):
+    for ii in range(10):
+        if i <= ii:
+            print("*", end="")
+    print("")
+print("")
+print("(2)")
+for i in range(10):
+    for ii in range(10):
+        if i >= ii:
+            print(" ", end="")
+        else:
+            print("*", end="")
+    print("")

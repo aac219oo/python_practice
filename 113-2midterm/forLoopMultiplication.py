@@ -13,3 +13,10 @@ images\113-2midterm\forLoopMultiplication.jpg
 18 16 14 12 10  8  6  4  2
  9  8  7  6  5  4  3  2  1
 '''
+for i in range(9, 0, -1):
+    for ii in range(9, 0, -1):
+        if ii*i >= 10:
+            print(ii*i, end=" ")
+        else:
+            print(f" {ii*i}", end=" ")
+    print(" ")
