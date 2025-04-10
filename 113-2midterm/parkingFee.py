@@ -75,8 +75,8 @@ def parkingFee(min):
                     break
                else:
                     min = min - calDay * 1440
-                    print("over one day", min)
                     calParkingTime = min // 30
+                    
                     if min % 30 >= 15:
                          calParkingTime += 1
                     elif 1 <= min < 30:
