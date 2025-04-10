@@ -23,19 +23,22 @@ images\113-2midterm\parkingFee.jpg
 # else:
 #     print("請輸入小於20的正整數")
 
+messages = ["請輸入長度：", "請輸入寬度："]
+rangeList = []
 
-while True:
-    try:
-        inputHeight = int(input("請輸入長度："))
-        inputWeight = int(input("請輸入寬度："))
-        if 0 < inputHeight < 20 or 0 < inputWeight < 20:
-            break
-        else:
-            print("請輸入小於20的正整數")
-    except ValueError:
-        print("請輸入正整數")
+for i in range(2):
+    while True:
+        try:
+            inputRange = int(input(messages[i]))
+            if 0 < inputRange < 20:
+                rangeList.append(inputRange)
+                break
+            else:
+                print("請輸入小於20的正整數")
+        except ValueError:
+            print("請輸入正整數")
 
-for i in range(inputHeight):
-    for ii in range(inputWeight):
+for i in range(rangeList[0]):
+    for ii in range(rangeList[1]):
         print("*", end="")
     print("")
