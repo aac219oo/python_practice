@@ -28,7 +28,7 @@ basicSalary = 16855
 # print(f"小蔡這個月薪水為{math.ceil(calSalary(inputSellCarsCount))}元")
 
 extraBonusRules = [
-    {"min": 1, "max": 5, "rate": 0, "bonus": 0, "extra": 0},
+    {"min": 0, "max": 5, "rate": 0, "bonus": 0, "extra": 0},
     {"min": 5, "max": 10, "rate": 0.1, "bonus": 5000, "extra": 0},
     {"min": 10, "max": 20, "rate": 0.2, "bonus": 10000, "extra": 0},
     {"min": 20, "max": 40, "rate": 0.3, "bonus": 50000, "extra": 0},
@@ -38,10 +38,10 @@ extraBonusRules = [
 while True:
     try:
         inputSellCarsCount = int(input("請輸入這個月賣了幾台車："))
-        if inputSellCarsCount > 0:
+        if inputSellCarsCount >= 0:
             break
         else:
-            print("請輸入正整數")
+            print("請勿小於0")
     except ValueError:
         print("請輸入正整數")
 
