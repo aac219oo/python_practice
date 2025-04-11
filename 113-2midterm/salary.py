@@ -4,10 +4,11 @@ images\113-2midterm\salary.jpg
 小蔡在Toyota公司上班，薪水包括底薪和加成、業績獎金。底薪為16,855
 元，獎金則是依照銷售車輛來計算。請撰寫一程式，提示使用者輸入銷售
 量，然後算出小明該領的薪水總額。
-例如:小蔡賣出20台，薪水共有16855+(16855*0.3)+50000=51912
+例如:小蔡賣出20台，薪水共有16855+(16855*0.3)+50000=71912
     小蔡賣出46台，16855+(16855*0.5)+100000+(6*5000)=155283
 '''
 import math
+from decimal import Decimal, ROUND_HALF_UP
 basicSalary = 16855
 
 # inputSellCarsCount = int(input("請輸入這個月賣了幾台車："))
@@ -52,3 +53,4 @@ def calSalary(count):
     return salary
 
 print(f"小蔡這個月薪水為{math.ceil(calSalary(inputSellCarsCount))}元")
+print(Decimal(str(calSalary(inputSellCarsCount))).quantize(Decimal('1'), rounding=ROUND_HALF_UP))
