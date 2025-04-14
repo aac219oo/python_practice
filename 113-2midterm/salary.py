@@ -48,9 +48,8 @@ while True:
 def calSalary(count):
     for i in range(len(extraBonusRules)):
         if extraBonusRules[i]["min"] <= count < extraBonusRules[i]["max"]:
-            salary = basicSalary + (basicSalary * extraBonusRules[i]["rate"]) + extraBonusRules[i]["bonus"] + ((count - 40) * extraBonusRules[i]["extra"])
-            break
-    return salary
+            return basicSalary + (basicSalary * extraBonusRules[i]["rate"]) + extraBonusRules[i]["bonus"] + ((count - 40) * extraBonusRules[i]["extra"]) 
+    return 0
 
 print(f"小蔡這個月薪水為{math.ceil(calSalary(inputSellCarsCount))}元")
 print(Decimal(str(calSalary(inputSellCarsCount))).quantize(Decimal('1'), rounding=ROUND_HALF_UP))

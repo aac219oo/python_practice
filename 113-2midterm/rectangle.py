@@ -24,21 +24,21 @@ images\113-2midterm\parkingFee.jpg
 #     print("請輸入小於20的正整數")
 
 messages = ["請輸入長度：", "請輸入寬度："]
-rangeList = []
+dimensions = []
 
-for i in range(2):
+for message in messages:
     while True:
         try:
-            inputRange = int(input(messages[i]))
+            inputRange = int(input(message))
             if 0 < inputRange < 20:
-                rangeList.append(inputRange)
+                dimensions.append(inputRange)
                 break
             else:
                 print("請輸入小於20的正整數")
         except ValueError:
             print("請輸入正整數")
 
-for i in range(rangeList[0]):
-    for ii in range(rangeList[1]):
-        print("*", end="")
-    print("")
+lenth, width = dimensions
+
+for i in range(lenth):
+    print("*" * width)

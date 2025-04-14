@@ -87,9 +87,9 @@ def parkingFee(min):
 
                     for i in range(len(feeRules)):
                          if feeRules[i]["min"] <= min < feeRules[i]["max"]:
-                              print("over one day, per days", calDay)
+                              # print("over one day, per days", calDay)
                               fee = feeRules[i]["fee"] * calParkingTime + feeRules[4]["limitFee"] * calDay
                               break
      return fee
 
-print(parkingFee(inputParkingTime))
+print(f"停車費用：{parkingFee(inputParkingTime)}元")
