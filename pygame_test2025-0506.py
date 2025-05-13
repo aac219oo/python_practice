@@ -12,8 +12,13 @@ bg = pg.Surface(screen.get_size())
 bg = bg.convert()
 bg.fill((255,177,27))
 image= pg.image.load("images/Squidward.png")
-image.convert()
-bg.blit(image, ((width/2)-(image.get_width()/2), (height/2)-image.get_height()/2))
+img_width,img_height = image.get_size()
+scale = 0.4
+img_width = img_width * scale
+img_height = img_height * scale
+scaled_image = pg.transform.scale(image, (img_width, img_height))
+scaled_image.convert()
+bg.blit(scaled_image, ((width/2)-(scaled_image.get_width()/2), (height/2)-scaled_image.get_height()/2))
 
 #screen.blit(bg, (0,0))
 #pg.display.update()
@@ -40,7 +45,7 @@ while running:
         if moving:
             position = pg.mouse.get_pos()
             bg.fill((255,177,27))
-            bg.blit(image, (position[0]-image.get_width()/2,position[1]-image.get_height()/2))
+            bg.blit(scaled_image, (position[0]-scaled_image.get_width()/2,position[1]-scaled_image.get_height()/2))
     screen.blit(bg, (0,0))
     pg.display.update()
 pg.quit()
