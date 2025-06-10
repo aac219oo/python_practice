@@ -19,6 +19,8 @@ BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 RED = (255, 80, 80, 255)
 BLUE = (90, 90, 255, 255)
+stun_cooldown_time = 1.2
+
 # 玩家方向
 DIRECTION_ANGLES = {
     "right": 0,
@@ -43,6 +45,8 @@ start_sound = pg.mixer.Sound("music/button01b.mp3")
 restart_sound = pg.mixer.Sound("music/button02b.mp3")
 count_sound = pg.mixer.Sound("music/select01.mp3")
 gameStart_sound = pg.mixer.Sound("music/select09.mp3")
+
+
 # 包裝內建載入圖片函式
 def load_image(path, size):
     image = pg.image.load(path).convert_alpha()
@@ -58,7 +62,8 @@ back_size = [800, 600]
 back_img = load_image("images/bmKing/icon.png", back_size)
 start_size = [250, 30.6]
 start_img = load_image("images/bmKing/start.png", start_size)
-
+restart_size = [291.7, 30.6]
+restart_img = load_image("images/bmKing/restart.png", restart_size)
 # 遊戲邊界範圍
 boundary_rect = pg.Rect(10, 100, 780, 490)
 boundary_rect_border = 5
@@ -136,14 +141,18 @@ def draw_pacman(surface, x, y, frame_image, color, direction):
 # 新增玩家起始方向設定值
 player_size = [40, 40]
 player_radius = 20
+players1_x = 200
+players1_y = 340
+players2_x = 600
+players2_y = 340
 speed = 5
 players = [
     {
         "name": "藍色玩家",
         "img": load_image('images/bmKing/rock.png', player_size),
         "color": BLUE,
-        "x": 200,
-        "y": 300,
+        "x": players1_x,
+        "y": players1_y,
         "keys": [pg.K_a, pg.K_d, pg.K_w, pg.K_s],
         "score": 0,
         "direction": "right",
@@ -157,8 +166,8 @@ players = [
         "name": "紅色玩家",
         "img": load_image('images/bmKing/rock.png', player_size),
         "color": RED,
-        "x": 600,
-        "y": 300,
+        "x": players2_x,
+        "y": players2_y,
         "keys": [pg.K_LEFT, pg.K_RIGHT, pg.K_UP, pg.K_DOWN],
         "score": 0,
         "direction": "left",
@@ -328,7 +337,7 @@ def check_collision_with_targets(x, y, radius, targets):
     return None
 
 
-# 檢查是否玩家互相碰撞
+# 檢查玩家是否互相碰撞
 def check_player_collisions():
     current_time = time.time()
     for i, player1 in enumerate(players):
@@ -357,9 +366,8 @@ def check_player_collisions():
 
                 # 撞到了，觸發暈眩與聲音
                 stun_sound.play()
-                cooldown_time = 1.2
-                player1["stun_cooldown"] = current_time + cooldown_time
-                player2["stun_cooldown"] = current_time + cooldown_time
+                player1["stun_cooldown"] = current_time + stun_cooldown_time
+                player2["stun_cooldown"] = current_time + stun_cooldown_time
 
                 # 更新狀態
                 player1["last_collided_with"] = player2
@@ -373,6 +381,18 @@ def check_player_collisions():
                 if player2["last_collided_with"] == player1:
                     player2["has_separated"] = True
 
+# 呼吸燈特效
+def brightness_fn(img, color):
+    t = pg.time.get_ticks() / 1000
+    brightness = (math.sin(t * 2 * math.pi / 2) + 1) / 2
+    max_color = WHITE
+    tint_color = tuple(
+        int(color[i] + (max_color[i] - color[i]) * brightness)
+        for i in range(3))
+
+    tinted_img = tint_image(img, tint_color)
+    return tinted_img
+
 
 # 渲染遊戲開始畫面
 def show_start_screen():
@@ -384,7 +404,7 @@ def show_start_screen():
     overlay = pg.Surface(screen.get_size(), pg.SRCALPHA)
     overlay.fill((255, 255, 255, 128))
     screen.blit(overlay, (0, 0))
-    logo_size = [540, 356]
+    logo_size = [400, 263.7]
     logo_img = load_image("images/bmKing/logo.png", logo_size)
 
     # 載入排行榜
@@ -397,7 +417,7 @@ def show_start_screen():
                                 True, BLACK)
         screen.blit(rank_text, (30, 390 + i * 30))
 
-    screen.blit(logo_img, logo_img.get_rect(center=(400, 150)))
+    screen.blit(logo_img, logo_img.get_rect(center=(400, 100)))
 
     pg.display.update()
 
@@ -412,20 +432,7 @@ def show_start_screen():
                     start_sound.play()
                     waiting = False
 
-        # ✅ 使用 sin 波產生閃爍值（0 到 1）
-        t = pg.time.get_ticks() / 1000  # 時間（秒）
-        brightness = (math.sin(t * 2 * math.pi / 2) + 1) / 2  # 每 2 秒循環，範圍 0~1
-
-        # ✅ 混合白色與紅色
-        base_color = (255, 100, 100)
-        max_color = (255, 255, 255)
-        tint_color = tuple(
-            int(base_color[i] + (max_color[i] - base_color[i]) * brightness)
-            for i in range(3)
-        )
-
-        tinted_img = tint_image(start_img, tint_color)
-        screen.blit(tinted_img, tinted_img.get_rect(center=(400, 500)))
+        screen.blit(brightness_fn(start_img, RED), start_img.get_rect(center=(400, 450)))
 
         pg.display.flip()
         clock.tick(60)
@@ -437,12 +444,22 @@ def show_start_screen():
         pg.draw.rect(screen, (0, 0, 0), boundary_rect, boundary_rect_border)
         screen.blit(bg_img, (boundary_rect.left + boundary_rect_border,
                              boundary_rect.top + boundary_rect_border))
+                             
         for ii, player in enumerate(players):
             text = font.render(f"{player['name']} 分數：{player['score']}", True,
                                WHITE)
             screen.blit(text, (20, 20 + ii * 40))
         time_text = font.render(f"剩餘時間：   秒", True, WHITE)
         screen.blit(time_text, (550, 20))
+        # 顯示分數提示
+        for iii, star in enumerate(star_types):
+            img = star["img"]
+            score = star["score"]
+            score_text = font.render(f"+{score}", True, WHITE)
+            screen.blit(img, (400 + iii * 80, 60))
+            screen.blit(score_text, (430 + iii * 80, 57))
+        screen.blit(rock_types[0]["img"], (660, 55))
+        screen.blit(font.render(f"{rock_types[0]["score"]}", True, WHITE), (720, 57))
         for player in players:
             draw_pacman(screen, player["x"], player["y"], frames[frame_index],
                         player["color"], player["direction"])
@@ -462,7 +479,7 @@ start_time = time.time()
 
 # 遊戲主要邏輯
 def main_game():
-    global rocks, stars, score_popups, start_time, frame_index, frame_timer, players
+    global rocks, stars, score_popups, start_time, frame_index, frame_timer, players, winner
     # 重設遊戲狀態
     stars = [create_star() for _ in range(star_count)]
     rocks = [create_rock() for _ in range(rock_count)]
@@ -471,9 +488,10 @@ def main_game():
     frame_timer = 0
     for player in players:
         player["score"] = 0
-        player["x"], player["y"] = (200,
-                                    300) if player["name"] == "藍色玩家" else (600,
-                                                                           300)
+        player["x"], player["y"] = (
+            players1_x,
+            players1_y) if player["name"] == "藍色玩家" else (players2_x,
+                                                          players2_y)
         player["direction"] = "right" if player["name"] == "藍色玩家" else "left"
 
     start_time = show_start_screen()
@@ -598,6 +616,8 @@ def main_game():
             if not collided_rock:
                 player["x"] = new_x
                 player["y"] = new_y
+            else:
+                player["stun_cooldown"] = current_time + stun_cooldown_time
 
         # 星星更新與碰撞判斷
         new_stars = []
@@ -661,8 +681,8 @@ def main_game():
         for star in stars:
             screen.blit(star["img"], (star["x"], star["y"]))
 
-        start_text = large_font.render("開始！", True, (255, 0, 0))
-        
+        start_text = large_font.render("開始！", True, BLACK)
+
         if time.time() - start_time < 1.5:
             screen.blit(start_text, start_text.get_rect(center=(400, 300)))
 
@@ -674,6 +694,16 @@ def main_game():
         time_text = font.render(f"剩餘時間：{remain_time} 秒", True, WHITE)
         screen.blit(time_text, (550, 20))
 
+        # 顯示分數提示
+        for i, star in enumerate(star_types):
+            img = star["img"]
+            score = star["score"]
+            score_text = font.render(f"+{score}", True, WHITE)
+            screen.blit(img, (400 + i * 80, 60))
+            screen.blit(score_text, (430 + i * 80, 57))
+        screen.blit(rock_types[0]["img"], (660, 55))
+        screen.blit(font.render(f"{rock_types[0]["score"]}", True, WHITE), (720, 57))
+
         pg.display.update()
 
     # 遊戲結束畫面
@@ -682,7 +712,7 @@ def main_game():
     winner_text = font.render(f"遊戲結束！{winner[0]['name']}獲勝！", True,
                               winner[0]['color'])
     draw_text = font.render(f"平手！", True, BLACK)
-    restart_text = font.render(f"按下空白鍵重新開始遊戲", True, winner[0]['color'])
+
     overlay = pg.Surface(screen.get_size(), pg.SRCALPHA)
     overlay.fill((255, 255, 255, 128))
     screen.blit(overlay, (0, 0))
@@ -690,19 +720,20 @@ def main_game():
         screen.blit(draw_text, (380, 250))
     else:
         screen.blit(winner_text, (250, 250))
-    screen.blit(restart_text, (260, 280))
 
     # --- 遊戲結束後更新排行榜 ---
-    winner = max(players, key=lambda x: x["score"])
+    winner_record = max(players, key=lambda x: x["score"])
     highscores = load_highscores()
-    highscores.append({"name": winner["name"], "score": winner["score"]})
+    highscores.append({
+        "name": winner_record["name"],
+        "score": winner_record["score"]
+    })
 
     # 按照分數排序，只保留前五名
     highscores.sort(key=lambda x: x["score"], reverse=True)
     highscores = highscores[:5]
 
     save_highscores(highscores)
-
     pg.display.update()
 
     # 等待任意鍵
@@ -716,7 +747,10 @@ def main_game():
                 if event.key == pg.K_SPACE:
                     restart_sound.play()
                     waiting = False
-
+        screen.blit(brightness_fn(restart_img, winner[0]['color']),
+                    start_img.get_rect(center=(380, 300)))
+        pg.display.flip()
+        clock.tick(60)
 
 # 重複遊戲主要邏輯
 while True:
