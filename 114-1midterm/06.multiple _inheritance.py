@@ -1,3 +1,7 @@
+'''
+題目 6：多重繼承的應用
+設計一個 `SmartDevice` 同時繼承 `Switchable` 與 `Adjustable`，實作冷氣與桌燈的操作行為。
+'''
 class Switchable:
     def turn_on(self):
         return f"{self.name}已開啟"

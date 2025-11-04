@@ -1,3 +1,7 @@
+'''
+題目 1：類別與物件建立
+請建立一個名為 `Student` 的類別，具備 `name` 和 `scores` 屬性，並加入 `average()` 方法，回傳三科平均。
+'''
 class Student:
 
     def __init__(self, name, scores) -> None:

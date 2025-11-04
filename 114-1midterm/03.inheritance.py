@@ -1,3 +1,7 @@
+'''
+題目 3：繼承基本練習
+請建立 `Person` 父類別與 `Teacher` 子類別，並顯示老師的名字與科目。
+'''
 class Person:
 
     def __init__(self, name) -> None:

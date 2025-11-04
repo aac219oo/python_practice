@@ -1,7 +1,8 @@
+'''
+題目 7：抽象類別與總價計算
+設計電子商店的商品類別與兩種產品，顯示描述與計算總價。
+'''
 from abc import ABC, abstractmethod
-'''
-設計電子商店的商品類別與兩種產品，顯示描述與計算總價
-'''
 
 class Category(ABC):
 

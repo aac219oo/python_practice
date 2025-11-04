@@ -1,3 +1,7 @@
+'''
+題目 4：抽象類別與多型
+請定義抽象類別 `Animal`，並由 `Dog`、`Cat` 繼承後各自實作 `speak()` 方法。
+'''
 from abc import ABC, abstractmethod
 
 

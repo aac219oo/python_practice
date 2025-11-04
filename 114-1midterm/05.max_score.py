@@ -1,3 +1,7 @@
+'''
+題目 5：列表結合類別（查詢平均分最高）
+請寫出程式找出學生名單中，平均分數最高者姓名與平均。
+'''
 class Student:
 
     def __init__(self, name, scores) -> None:
@@ -15,4 +19,4 @@ students = [
     Student("CC", [80, 90, 70])
 ]
 top_student = max(students, key=lambda s: s.average())
-print(f"平均分數最高的學生是{top_student.name}，最高平均分數為{top_student.average()}分")
+print(f"平均分數最高的學生是{top_student.name}，最高平均分數為{top_student.average():.2f}分")

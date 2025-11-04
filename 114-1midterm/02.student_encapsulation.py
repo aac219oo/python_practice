@@ -1,3 +1,8 @@
+'''
+題目 2：封裝與成績設定
+請建立一個名為 `Student` 的類別，在 `Student` 類別中將 `scores` 設為私有屬性，
+並使用 `set_scores()` 方法來設定，若分數不是 0~100，則拒絕設定。
+'''
 class Student:
 
     def __init__(self, name) -> None:
