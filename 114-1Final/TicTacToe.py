@@ -67,7 +67,7 @@ class TicTacToe:
         self.restart_button.grid_remove()  # 隱藏重啟按鈕
 
     def get_score_text(self):
-        return f"叉叉: {self.scores['×']} 圈圈: {self.scores['○']} 平局: {self.scores['Draw']}"
+        return f"計分板 叉叉: {self.scores['×']} 圈圈: {self.scores['○']} 平手: {self.scores['Draw']}"
 
     def make_move(self, r, c):
         index = r * 3 + c
